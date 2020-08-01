@@ -3,7 +3,7 @@ import requests
 
 def crawl(urls):
     for res in (requests.get(url) for url in urls):
-        yield len(res.content), res.status_code, res.urlgit
+        yield len(res.content), res.status_code, res.url
 
 
 urlss = ['https://ithelp.ithome.com.tw/articles/10213503', 'https://ithelp.ithome.com.tw/articles/10213503',
