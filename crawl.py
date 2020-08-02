@@ -1,14 +1,27 @@
 import requests
+from lxml import etree
+from pprint import pprint
+import json
+import re
 
 
 def crawl(urls):
-    for res in (requests.get(url) for url in urls):
+    for res in (requests.get(url) for url in urls):  # 產生器形式
         yield len(res.content), res.status_code, res.url
 
 
-urlss = ['https://ithelp.ithome.com.tw/articles/10213503', 'https://ithelp.ithome.com.tw/articles/10213503',
-         'https://ithelp.ithome.com.tw/tags/articles/11th%E9%90%B5%E4%BA%BA%E8%B3%BD']
+url = 'https://nlnbamdnyc-a.akamaihd.net/fs/nba/feeds_s2019/schedule/2020/7_27.js'
+headers = {
+    'Referer': 'https://watch.nba.com/',
+    'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_5) AppleWebKit/537.36 '
+                  '(KHTML, like Gecko) Chrome/84.0.4147.105 Safari/537.36'
+}
+data = {'t': '1596362940000'}
+qw = requests.get(url, headers=headers, params=data)
+a = re.findall('g_schedule=(.*)', qw.text)
 
-with open('text.txt', 'a') as file:
-    for content, status, url in crawl(urlss):
-        print(content, '->', status, '->', url, file=file)
+count = -1
+for i in range(6):
+    count += 1
+    one = {k: v for k, v in json.loads(a[0])['games'][6][count].items()}
+    print(one['h'] + ' vs ' + one['v'], one['hr'], count)
