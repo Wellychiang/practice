@@ -4,6 +4,7 @@ from pprint import pprint
 import json
 import re
 from selenium import webdriver
+from time import sleep
 
 
 def crawl(urls):
@@ -31,13 +32,20 @@ def req_nba():
 
 #  Chromedriver在下載資料夾, 還沒加入環境變數
 def selenium_nba():
-    b = webdriver.Chrome()
+    b = webdriver.Chrome('/Users/g45p2k7a8/Downloads/chromedriver')
     b.implicitly_wait(3)
     b.get('https://watch.nba.com/')
-    game = b.find_element_by_xpath("//*[contains(span,'比賽')]")
-    game.click()
+    accept = b.find_element_by_xpath("//*[contains(text(),'I Accept') and @id='onetrust-accept-btn-handler']")
+    accept.click()
+    # b.get('https://watch.nba.com/')
+    # sleep(5)
+    # game = b.find_element_by_xpath("//*[contains(span,'比賽')]")
+    # game.click()
     page = b.page_source
     with open('source.txt', 'a') as file:
         print(page, file=file)
+
+
+selenium_nba()
 
 
