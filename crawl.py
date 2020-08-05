@@ -1,5 +1,5 @@
 import requests
-from lxml import etree
+from lxml import etree, html
 from pprint import pprint
 import json
 import re
@@ -30,22 +30,26 @@ def req_nba():
         print(one['h'] + ' vs ' + one['v'], one['hr'], count)
 
 
-#  Chromedriver在下載資料夾, 還沒加入環境變數
+#  ChromeDriver在下載資料夾, 還沒加入環境變數
+#  基本上爬蟲用到selenium都是在動態或較麻煩情況下才會使用, 因速度較慢
 def selenium_nba():
-    b = webdriver.Chrome('/Users/g45p2k7a8/Downloads/chromedriver')
+    b = webdriver.Chrome('/Users/g45p2k7a8/Downloads/chromedriver')  # 不會用環境變數的話就只能老實的寫上位置了
     b.implicitly_wait(3)
     b.get('https://watch.nba.com/')
     accept = b.find_element_by_xpath("//*[contains(text(),'I Accept') and @id='onetrust-accept-btn-handler']")
     accept.click()
-    # b.get('https://watch.nba.com/')
-    # sleep(5)
-    # game = b.find_element_by_xpath("//*[contains(span,'比賽')]")
-    # game.click()
     page = b.page_source
-    with open('source.txt', 'a') as file:
-        print(page, file=file)
+    source = etree.HTML(page)
+    find = source.xpath("//*[contains(@data-gid,'002')]//text()")  # 沒有text()的話只會輸出當前節點狀態
+    game = [a for a in ''.join(find).split()]
+    print(game)
+    # with open('source.txt', 'w') as file:
+    #     print(find, file=file)
 
 
+# with open('source.txt') as file:
+#     source = etree.parse(file.read())  # 這邊要用as file的話就必須要用read
+#     find = source.xpath("//*[contains(@data-gid,'002')]/text()")
+#     for team in find:
+#         print(find)
 selenium_nba()
-
-
