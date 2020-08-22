@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import requests
 from lxml import etree, html
 from pprint import pprint
@@ -43,8 +44,8 @@ def selenium_nba():
     find = source.xpath("//*[contains(@data-gid,'002')]//text()")  # 沒有text()的話只會輸出當前節點狀態
     game = [a for a in ''.join(find).split()]
     print(game)
-    # with open('source.txt', 'w') as file:
-    #     print(find, file=file)
+    with open('source.txt', 'w') as file:
+        print(find, file=file)
 
 
 # with open('source.txt') as file:
@@ -52,4 +53,5 @@ def selenium_nba():
 #     find = source.xpath("//*[contains(@data-gid,'002')]/text()")
 #     for team in find:
 #         print(find)
-selenium_nba()
+# selenium_nba()
+req_nba()
