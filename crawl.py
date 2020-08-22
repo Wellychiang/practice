@@ -54,4 +54,5 @@ def selenium_nba():
 #     for team in find:
 #         print(find)
 # selenium_nba()
-req_nba()
+if __name__ == '__main__':
+    req_nba()
